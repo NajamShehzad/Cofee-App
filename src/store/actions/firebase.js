@@ -11,7 +11,6 @@ export const FirebaseData = (data) => {
 export const callFirebase = () => {
 
     firebase.database().ref('users').on('child_added', data => {
-        console.log(data.val())
         let data1 = data.val()
         store.dispatch({ type: 'ADD_USER', data: data1 })
     })

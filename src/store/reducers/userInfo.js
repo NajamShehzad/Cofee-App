@@ -1,10 +1,8 @@
 
-const user = {}
-
-export default (state = {}, action) => {
+export default (state = [], action) => {
     switch (action.type) {
         case 'ADD_USER':
-            return action.data
+            return [...state,action.data]
         default:
         return state
     }

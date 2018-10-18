@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../../config/firebase';
 import { connect } from 'react-redux';
-import { FirebaseData,callFirebase } from '../../store/actions/firebase';
+import { FirebaseData, callFirebase } from '../../store/actions/firebase';
 
 const provider = new firebase.auth.FacebookAuthProvider();
 
@@ -14,25 +14,28 @@ class Login extends Component {
 
         this.login = this.login.bind(this);
     }
-
-    login() {
+    componentDidMount() {
         callFirebase();
+    }
+    login() {
         // firebase.database().ref('users').on('child_added', data => {
         //     console.log(data.val())
         //     let data1 = data.val() 
         //     this.props.dispatch(FirebaseData(data1))
         // })
-        // firebase.auth().signInWithPopup(provider).then(x => {
-        //     console.log((x.user.uid));
-        //     console.log((x));
-        //     console.log((x.additionalUserInfo.profile.picture.data.url));
-        //     firebase.database().ref(`users/${x.user.uid}`).set({
-        //         profile:x.additionalUserInfo.profile,
-        //         userId:x.user.uid,
-        //     })
-        // }).catch(err => {
-        //     console.log(err);
-        // })
+        firebase.auth().signInWithPopup(provider).then(x => {
+            // console.log((x.user.uid));
+            // console.log((x));
+            // console.log((x.additionalUserInfo.profile.picture.data.url));
+            const currentUser = {
+                profile: x.additionalUserInfo.profile,
+                userId: x.user.uid
+            }
+            this.props.dispatch({ type: 'CurrentUser', currentUser})
+            firebase.database().ref(`users/${x.user.uid}`).set(currentUser)
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     render() {
@@ -54,7 +57,8 @@ class Login extends Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        currentUser:state.currentUser
     }
 }
 
