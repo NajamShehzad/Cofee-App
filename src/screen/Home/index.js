@@ -1,17 +1,56 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import firebase, { loginWithFirebase } from '../../config/firebase';
+import './style.css'
 
 
 
 class Home extends Component {
+
+    constructor(props) {
+        super(props)
+        this.login = this.login.bind(this);
+    }
+
+    login() {
+        loginWithFirebase().then(data => {
+            console.log(data);
+            const currentUser = {
+                profile: data.additionalUserInfo.profile,
+                userId: data.user.uid
+            }
+            this.props.dispatch({ type: 'CurrentUser', currentUser })
+            firebase.database().ref(`users/${data.user.uid}`).set(currentUser)
+            this.props.history.push('/login')
+        })
+    }
+
+
     render() {
+        console.log(this.props);
+
         return (
-            <div>
-                <h1>
-                    Home Screen
-                </h1>
+            <div className="main" >
+                <div className="homeDiv">
+
+                </div>
+                <div className="loginDiv" >
+                    <h1>
+                        Home Screen
+                    </h1>
+                    <button className="btn loginBtn" onClick={this.login}>
+                        Login Here
+                    </button>
+                </div>
             </div>
         )
     }
 }
 
-export default Home;
+const mapStateToprops = (state) => {
+    return {
+        currentUser: state.currentUser
+    }
+}
+
+export default connect(mapStateToprops)(Home);

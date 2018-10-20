@@ -1,5 +1,7 @@
 import store from '../index';
 import firebase from '../../config/firebase';
+
+
 export const FirebaseData = (data) => {
     console.log(data);
     return {
@@ -15,3 +17,5 @@ export const callFirebase = () => {
         store.dispatch({ type: 'ADD_USER', data: data1 })
     })
 }
+
+
