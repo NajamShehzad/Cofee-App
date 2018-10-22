@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import firebase, { loginWithFirebase } from '../../config/firebase';
+import firebase, { loginWithFirebase,saveUser } from '../../config/firebase';
 import './style.css'
 
 
@@ -15,12 +15,7 @@ class Home extends Component {
     login() {
         loginWithFirebase().then(data => {
             console.log(data);
-            const currentUser = {
-                profile: data.additionalUserInfo.profile,
-                userId: data.user.uid
-            }
-            this.props.dispatch({ type: 'CurrentUser', currentUser })
-            firebase.database().ref(`users/${data.user.uid}`).set(currentUser)
+            saveUser(data)
             this.props.history.push('/login')
         })
     }

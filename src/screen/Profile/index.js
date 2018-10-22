@@ -1,53 +1,38 @@
 import React, { Component } from 'react';
-import firebase from '../../config/firebase';
 import { connect } from 'react-redux';
-import { FirebaseData, callFirebase } from '../../store/actions/firebase';
+import Header from '../../components/Header';
+import UserInfo from './info';
+import './style.css';
 
-const provider = new firebase.auth.FacebookAuthProvider();
 
-console.log(firebase)
+
+
 
 class Login extends Component {
     constructor(props) {
         super(props)
-
-
-        this.login = this.login.bind(this);
-    }
-    componentDidMount() {
-        callFirebase();
-    }
-    login() {
-        // firebase.database().ref('users').on('child_added', data => {
-        //     console.log(data.val())
-        //     let data1 = data.val() 
-        //     this.props.dispatch(FirebaseData(data1))
-        // })
-        firebase.auth().signInWithPopup(provider).then(x => {
-            // console.log((x.user.uid));
-            // console.log((x));
-            // console.log((x.additionalUserInfo.profile.picture.data.url));
-            const currentUser = {
-                profile: x.additionalUserInfo.profile,
-                userId: x.user.uid
+        this.state = {
+            steps: 1,
+            userInfo: {
             }
-            this.props.dispatch({ type: 'CurrentUser', currentUser})
-            firebase.database().ref(`users/${x.user.uid}`).set(currentUser)
-        }).catch(err => {
-            console.log(err);
-        })
+        }
+        this.SubmitInfo = this.SubmitInfo.bind(this);
     }
-
+    SubmitInfo(data){
+        this.setState({userInfo:{...data}});
+        console.log(this.state.userInfo)
+    }   
     render() {
-        console.log(this.props)
+        const { steps } = this.state;
         return (
             <div>
-                <h1>
-                    Login Route
-                </h1>
-                <div>
-                    <button onClick={this.login} >
-                        Login Here Please
+                <Header />
+                <div className="container-fluid">
+                    <div>
+                        {steps == 1 && <UserInfo SubmitInfo={this.SubmitInfo} />}
+                    </div>
+                    <button>
+                        Next
                     </button>
                 </div>
             </div>
@@ -58,7 +43,7 @@ class Login extends Component {
 const mapStateToProps = state => {
     return {
         user: state.user,
-        currentUser:state.currentUser
+        currentUser: state.currentUser
     }
 }
 
