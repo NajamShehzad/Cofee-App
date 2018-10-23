@@ -1,18 +1,6 @@
 import React, { Component } from 'react';
-
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-
-const MyMapComponent = withScriptjs(withGoogleMap((props) =>
-    <GoogleMap
-        defaultZoom={8}
-        defaultCenter={{ lat: -34.397, lng: 150.644 }}
-    >
-        {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} />}
-    </GoogleMap>
-))
-
-
-
+import MyMapComponent from './googlemap';
+import {connect} from 'react-redux';
 
 
 class Map extends Component {
@@ -20,22 +8,40 @@ class Map extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            location: {}
         }
+        this.updateCoords = this.updateCoords.bind(this);
     }
-
+    componentDidMount() {
+            this.setState({ location: this.props.location.coords });       
+    }
+    updateCoords({ latitude, longitude }) {
+        this.setState({ location: { latitude, longitude } })
+    }
+    
+    
+    
     render() {
+        const { location } = this.state;
         return (
             <div>
                 <MyMapComponent
                     isMarkerShown
                     googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
                     loadingElement={<div style={{ height: `100%` }} />}
-                    containerElement={<div style={{ height: `400px` }} />}
+                    containerElement={<div style={{ height: `80vh` }} />}
                     mapElement={<div style={{ height: `100%` }} />}
+                    coords={location}
+                    updateCoords={this.updateCoords}
                 />
             </div>
         )
     }
 }
-export default Map;
+
+const mapStateToProps = (state) =>{
+    return{
+        location:state.geoLocation
+    }
+}
+export default connect(mapStateToProps)(Map);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import coffee from '../../images/coffee.svg';
-import juice from '../../images/juice.png';
-import cocktail from '../../images/cocktail.png';
+import coffee from '../../../images/coffee.svg';
+import juice from '../../../images/juice.png';
+import cocktail from '../../../images/cocktail.png';
 
 
 class Drinks extends Component {

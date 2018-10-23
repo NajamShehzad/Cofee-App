@@ -15,7 +15,7 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            step: 4,
+            step: 3,
             userInfo: {
             }
         }
@@ -26,8 +26,15 @@ class Login extends Component {
         this.setState({ userInfo: { ...userInfo, ...data }, step: step + 1 });
         console.log(this.state.userInfo)
     }
+    componentDidMount() {
+        window.navigator.geolocation.getCurrentPosition(location => {
+            this.props.dispatch({type:'Location',location:location})
+        });
+    }
     render() {
         const { step } = this.state;
+        // console.log(this.props);
+        
         return (
             <div>
                 <Header />
@@ -47,7 +54,8 @@ class Login extends Component {
 const mapStateToProps = state => {
     return {
         user: state.user,
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        geoLocation:state.geoLocation
     }
 }
 
