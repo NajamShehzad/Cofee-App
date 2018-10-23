@@ -8,11 +8,11 @@ class UserInfo extends Component {
         super(props);
         this.state = {
             name: '',
-            number: '03'
+            number: ''
         }
     }
     handleNumber(number) {
-        if (Number.parseInt(number)) {
+        if (!number || number.match(/^\d{1,}(\.\d{0,2})?$/)) {
             this.setState({ number })
         }
     }
@@ -50,8 +50,9 @@ class UserInfo extends Component {
                             onChange={(e) => this.handleNumber(e.target.value)}
                         />
                     </label>
+                    <br />
                     <button>
-                        Submit
+                        Next
                     </button>
                 </form>
             </div >

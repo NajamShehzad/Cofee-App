@@ -1,5 +1,13 @@
-.rc-steps{
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 22px;
+.img-div{
+    width: 230px;
+    height: 230px;
+    background: rgba(213, 125, 240, 0.6);
+}
+.img-upload{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    opacity: 0;
+    cursor: pointer;
 }
