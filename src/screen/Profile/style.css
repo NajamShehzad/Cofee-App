@@ -2,6 +2,8 @@
     width: 230px;
     height: 230px;
     background: rgba(213, 125, 240, 0.6);
+    cursor: pointer;
+    margin: 5px;
 }
 .img-upload{
     position: absolute;

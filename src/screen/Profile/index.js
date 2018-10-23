@@ -13,15 +13,15 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            step: 2,
+            step: 1,
             userInfo: {
             }
         }
         this.SubmitInfo = this.SubmitInfo.bind(this);
     }
     SubmitInfo(data) {
-        const { step } = this.state;
-        this.setState({ userInfo: { ...data }, step: step + 1 });
+        const { step,userInfo } = this.state;
+        this.setState({ userInfo: { ...userInfo,...data }, step: step + 1 });
         console.log(this.state.userInfo)
     }
     render() {
