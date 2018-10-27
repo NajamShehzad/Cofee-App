@@ -19,7 +19,9 @@ class Map extends Component {
         this.setState({ location: { latitude, longitude } })
     }
     
-    
+    SubmitLocation(){
+        this.props.SubmitInfo(this.state);
+    }
     
     render() {
         const { location } = this.state;
@@ -34,6 +36,11 @@ class Map extends Component {
                     coords={location}
                     updateCoords={this.updateCoords}
                 />
+                <div>
+                    <button onClick={() => this.SubmitLocation()} >
+                        Finish
+                    </button>
+                </div>
             </div>
         )
     }
