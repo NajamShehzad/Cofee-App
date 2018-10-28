@@ -10,6 +10,7 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route path='/login' component={LoginScreen} />
+              <Route path='/dashboard' component={LoginScreen} />
             </Switch>
         </BrowserRouter>
     );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import firebase, { loginWithFirebase,saveUser } from '../../config/firebase';
+import { loginWithFirebase, saveUser } from '../../config/firebase';
 import './style.css'
 
 

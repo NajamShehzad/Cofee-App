@@ -6,6 +6,7 @@ import Picture from './Picture/picture';
 import Drinks from './Drink/drinks';
 import Map from './Map/map';
 import './style.css';
+import { saveProfile } from '../../config/firebase';
 
 
 
@@ -20,32 +21,40 @@ class Login extends Component {
             }
         }
         this.SubmitInfo = this.SubmitInfo.bind(this);
+        if(!this.props.currentUser.userId){
+            this.props.history.replace('/')
+        }
     }
     SubmitInfo(data) {
         const { step, userInfo } = this.state;
+        let { currentUser } = this.props;
         this.setState({ userInfo: { ...userInfo, ...data }, step: step + 1 });
-        console.log(this.state.userInfo);
-        console.log(this.props);
-        
+        currentUser = { ...currentUser, ...userInfo, ...data }
+        console.log(currentUser);
+        if (step == 4) {
+            saveProfile(currentUser);
+        }
+
     }
     componentDidMount() {
         window.navigator.geolocation.getCurrentPosition(location => {
-            this.props.dispatch({type:'Location',location:location})
+            this.props.dispatch({ type: 'Location', location: location })
         });
     }
     render() {
         const { step } = this.state;
         // console.log(this.props);
-        
+
         return (
             <div>
                 <Header />
                 <div className="container-fluid">
                     <div>
                         {step == 1 && <UserInfo SubmitInfo={this.SubmitInfo} />}
-                        {step == 2 && <Picture SubmitInfo={this.SubmitInfo} />}
+                        {step == 2 && <Picture SubmitInfo={this.SubmitInfo} userId={this.props.currentUser} />}
                         {step == 3 && <Drinks SubmitInfo={this.SubmitInfo} />}
                         {step == 4 && <Map SubmitInfo={this.SubmitInfo} />}
+                        {step == 5 && <h1>Completed</h1>}
                     </div>
                 </div>
             </div>
@@ -57,7 +66,7 @@ const mapStateToProps = state => {
     return {
         user: state.user,
         currentUser: state.currentUser,
-        geoLocation:state.geoLocation
+        geoLocation: state.geoLocation
     }
 }
 
