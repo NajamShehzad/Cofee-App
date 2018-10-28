@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loginWithFirebase, saveUser } from '../../config/firebase';
+import { loginWithFirebase, saveUser, checkUser } from '../../config/firebase';
 import './style.css'
 
 
@@ -10,13 +10,28 @@ class Home extends Component {
     constructor(props) {
         super(props)
         this.login = this.login.bind(this);
+        console.log(this.props);
+        
+        if(this.props.currentUser.userId){
+            console.log('working');
+            
+            this.props.history.replace('/dashboard')
+        }
     }
 
     login() {
         loginWithFirebase().then(data => {
             console.log(data);
             saveUser(data)
-            this.props.history.push('/login')
+            checkUser(data).then(user => {
+                console.log(user);
+                this.props.history.push('/dashboard')
+            })
+            .catch(err=>{
+                console.log(err);
+                this.props.history.push('/login')
+                
+            })
         })
     }
 

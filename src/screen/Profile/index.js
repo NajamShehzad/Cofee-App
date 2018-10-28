@@ -21,7 +21,7 @@ class Login extends Component {
             }
         }
         this.SubmitInfo = this.SubmitInfo.bind(this);
-        if(!this.props.currentUser.userId){
+        if(!this.props.currentUser.userId || this.props.currentUser.login ){
             this.props.history.replace('/')
         }
     }
@@ -33,6 +33,8 @@ class Login extends Component {
         console.log(currentUser);
         if (step == 4) {
             saveProfile(currentUser);
+            localStorage.setItem('currentUser',JSON.stringify(currentUser));
+            this.props.history.replace('/dashboard')
         }
 
     }
