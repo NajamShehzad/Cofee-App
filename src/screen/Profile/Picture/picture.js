@@ -14,12 +14,16 @@ class Picture extends Component {
     pickImage(image, no) {
         const { imageUrl } = this.state;
         let reader = new FileReader();
-        reader.readAsDataURL(image.target.files[0]);
-        reader.onload = (e) => {
-            let image64 = e.target.result;
-            imageUrl[no] = image64;
-            this.setState({ imageUrl })
-        };
+        console.log(image.target.files[0]);
+
+        if (image.target.files[0]) {
+            reader.readAsDataURL(image.target.files[0]);
+            reader.onload = (e) => {
+                let image64 = e.target.result;
+                imageUrl[no] = image64;
+                this.setState({ imageUrl })
+            };
+        }
     }
 
     render() {

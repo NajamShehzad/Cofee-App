@@ -33,6 +33,7 @@ class UserInfo extends Component {
                     <label  >
                         NikName :
                     <input
+                            required
                             value={name}
                             className="form-control"
                             placeholder=""
@@ -43,6 +44,7 @@ class UserInfo extends Component {
                     <label>
                         PhoneNumber :
                     <input
+                            required
                             value={number}
                             className="form-control"
                             placeholder=""

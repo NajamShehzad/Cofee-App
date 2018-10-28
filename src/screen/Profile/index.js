@@ -24,7 +24,9 @@ class Login extends Component {
     SubmitInfo(data) {
         const { step, userInfo } = this.state;
         this.setState({ userInfo: { ...userInfo, ...data }, step: step + 1 });
-        console.log(this.state.userInfo)
+        console.log(this.state.userInfo);
+        console.log(this.props);
+        
     }
     componentDidMount() {
         window.navigator.geolocation.getCurrentPosition(location => {
