@@ -11,7 +11,6 @@ class App extends Component {
   constructor(props){
     super(props)
     checkUser();
-    console.log(this.props.currentUser);
   }
   render() {
     

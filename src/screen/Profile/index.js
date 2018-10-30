@@ -30,7 +30,7 @@ class Login extends Component {
         let { currentUser } = this.props;
         this.setState({ userInfo: { ...userInfo, ...data }, step: step + 1 });
         currentUser = { ...currentUser, ...userInfo, ...data }
-        console.log(currentUser);
+        // console.log(currentUser);
         if (step == 4) {
             saveProfile(currentUser);
             localStorage.setItem('currentUser',JSON.stringify(currentUser));
