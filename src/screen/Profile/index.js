@@ -21,7 +21,7 @@ class Login extends Component {
             }
         }
         this.SubmitInfo = this.SubmitInfo.bind(this);
-        if(!this.props.currentUser.userId || this.props.currentUser.login ){
+        if (!this.props.currentUser.userId || this.props.currentUser.login) {
             this.props.history.replace('/')
         }
     }
@@ -30,10 +30,10 @@ class Login extends Component {
         let { currentUser } = this.props;
         this.setState({ userInfo: { ...userInfo, ...data }, step: step + 1 });
         currentUser = { ...currentUser, ...userInfo, ...data }
-        // console.log(currentUser);
-        if (step == 4) {
+        console.log(data);
+        if (data.completed) {
             saveProfile(currentUser);
-            localStorage.setItem('currentUser',JSON.stringify(currentUser));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
             this.props.history.replace('/dashboard')
         }
 

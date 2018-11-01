@@ -4,6 +4,9 @@ import Header from '../../components/Header';
 import AppDashboard from '../../components/Dashboard';
 import Meeting from './Meeting/Meeting';
 import Cards, { Card } from 'react-swipe-deck';
+import { UserList } from '../../config/firebase';
+import { checkUser } from '../../config/localUser';
+import Location from './Meeting Location/Location';
 
 
 
@@ -13,6 +16,11 @@ class Dashboard extends Component {
         this.state = {
             meet: false
         }
+        UserList();
+        if (!localStorage.getItem('currentUser')) {
+            this.props.history.replace('/')
+        }
+        checkUser();
     }
     setMeeting() {
         const { meet } = this.state;
@@ -40,7 +48,8 @@ class Dashboard extends Component {
                             <button onClick={() => this.setMeeting()}>
                                 Set Meeting
                         </button>
-                    </div>}
+                        </div>}
+                    <Location />
                 </div>
             </div>
         )

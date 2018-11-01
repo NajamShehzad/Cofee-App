@@ -15,11 +15,20 @@ class Meeting extends Component {
             dot1: false,
             dot2: false,
         }
+        this.reject = this.reject.bind(this);
     }
 
     action(action1) {
         console.log(action1);
 
+    }
+    reject() {
+        this.setState({
+            index: 0,
+            dot0: true,
+            dot1: false,
+            dot2: false
+        })
     }
     render() {
         const { UserList } = this.props;
@@ -29,7 +38,9 @@ class Meeting extends Component {
             dot1,
             dot2
         } = this.state;
+        console.log(index);
         console.log(UserList);
+
 
         return (
             <div className="meeting-div">
@@ -40,21 +51,21 @@ class Meeting extends Component {
                     {UserList.map((item) =>
                         <Card
                             key={item.userId}
-                            onSwipeLeft={() => this.action(item.images[index])}
-                            onSwipeRight={() => { this.action(item.images[index]) }}>
+                            onSwipeLeft={() => this.reject()}
+                            onSwipeRight={() => { this.action(item) }}>
                             <div className="users-div">
                                 <img src={item.images[index]} />
                                 <div className="dot-div">
-                                    {!dot1 && <img src={circle} />}
+                                    {!dot0 && <img src={circle} onClick={() => this.setState({ index: 0, dot0: true, dot1: false, dot2: false })} />}
+                                    {dot0 && <img src={circle1} />}
+                                    {!dot1 && <img src={circle} onClick={() => this.setState({ index: 1, dot0: false, dot1: true, dot2: false })} />}
                                     {dot1 && <img src={circle1} />}
-                                    {!dot2 && <img src={circle1} />}
+                                    {!dot2 && <img src={circle} onClick={() => this.setState({ index: 2, dot0: false, dot1: false, dot2: true })} />}
                                     {dot2 && <img src={circle1} />}
-                                    {!dot3 && <img src={circle1} />}
-                                    {dot3 && <img src={circle1} />}
                                 </div>
-                                <button onClick={() => this.setState({ index: index + 1 })}>
+                                {/* <button onClick={() => this.setState({ index: index + 1 })}>
                                     Next
-                                </button>
+                                </button> */}
                             </div>
                         </Card>
                     )}

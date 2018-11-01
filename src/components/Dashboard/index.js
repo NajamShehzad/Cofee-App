@@ -4,11 +4,8 @@ import { connect } from 'react-redux';
 
 
 class DashBoard extends Component {
-
-
-
-
     render() {
+        const data = ['Alexandre', 'Thomas', 'Lucien']
         // console.log(this.props);
         function action(action) {
             console.log(action);

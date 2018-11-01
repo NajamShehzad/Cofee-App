@@ -8,7 +8,8 @@ class Map extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            location: {}
+            location: {},
+            completed:true
         }
         this.updateCoords = this.updateCoords.bind(this);
     }
@@ -16,7 +17,7 @@ class Map extends Component {
             this.setState({ location: this.props.location.coords });       
     }
     updateCoords({ latitude, longitude }) {
-        this.setState({ location: { latitude, longitude } })
+        this.setState({ location: { latitude, longitude },completed:true })
     }
     
     SubmitLocation(){
