@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import Header from '../../components/Header';
 import AppDashboard from '../../components/Dashboard';
 import Meeting from './Meeting/Meeting';
-import Cards, { Card } from 'react-swipe-deck';
+import DatePicker from './DateTime/DateTime';
+import swal from 'sweetalert2';
 import { UserList } from '../../config/firebase';
 import { checkUser } from '../../config/localUser';
 import Location from './Meeting Location/Location';
@@ -18,7 +19,9 @@ class Dashboard extends Component {
             location: false,
             person: {},
             dashboard: true,
-            palce: {}
+            date: false,
+            time: null,
+            place: {}
         }
         UserList();
         if (!localStorage.getItem('currentUser')) {
@@ -28,6 +31,7 @@ class Dashboard extends Component {
         this.confirmMeeting = this.confirmMeeting.bind(this);
         this.setLocation = this.setLocation.bind(this);
         this.confirmLocation = this.confirmLocation.bind(this);
+        this.confirmTime = this.confirmTime.bind(this);
     }
     setMeeting() {
         const { meet } = this.state;
@@ -40,16 +44,35 @@ class Dashboard extends Component {
         this.setState({ person, location: true, meet: false });
     }
     confirmLocation(place) {
-        this.setState({ place, location: false });
-        
+        this.setState({ place, location: false, date: true });
+    }
+    confirmTime(time) {
+        const { person } = this.state;
+        this.setState({ time });
+        console.log(time, this.state);
+        swal({
+            title: 'Do You Want To Fix The Meeting?',
+            text: person.name,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                console.log(result);
+
+            }else{
+                
+            }
+        })
     }
     render() {
         const { name } = this.props.currentUser
-        const { meet, location, dashboard } = this.state;
+        const { meet, location, dashboard, date } = this.state;
         // const data = ['Alexandre', 'Thomas', 'Lucien']
         // console.log(this.props);
         return (
-            <div>
+            <div style={{ marginLeft: 30 }}>
                 <Header />
                 <div>
                     {meet && <Meeting confirmMeeting={this.confirmMeeting} />}
@@ -64,6 +87,7 @@ class Dashboard extends Component {
                         </button>
                         </div>}
                     {location && <Location confirmLocation={this.confirmLocation} />}
+                    {date && <DatePicker confirmTime={this.confirmTime} />}
                 </div>
             </div>
         )
