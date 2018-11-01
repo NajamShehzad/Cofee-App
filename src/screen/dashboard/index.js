@@ -14,34 +14,42 @@ class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            meet: false
+            meet: false,
+            location: false,
+            person: {},
+            dashboard: true
         }
         UserList();
         if (!localStorage.getItem('currentUser')) {
             this.props.history.replace('/')
         }
         checkUser();
+        this.confirmMeeting = this.confirmMeeting.bind(this);
+        this.setLocation = this.setLocation.bind(this);
     }
     setMeeting() {
         const { meet } = this.state;
-        this.setState({ meet: !meet })
+        this.setState({ meet: !meet, dashboard: false })
+    }
+    setLocation() {
+        this.setState({ location: true })
+    }
+    confirmMeeting(person) {
+        this.setState({ person, location: true, meet: false });
     }
     render() {
         const { name } = this.props.currentUser
-        const { meet } = this.state;
-        const data = ['Alexandre', 'Thomas', 'Lucien']
+        const { meet, location, dashboard } = this.state;
+        // const data = ['Alexandre', 'Thomas', 'Lucien']
         // console.log(this.props);
-        function action(action) {
-            console.log(action);
-
-        }
         return (
             <div>
                 <Header />
                 <div>
-                    {meet ? <Meeting /> : <AppDashboard />}
-                    {!meet &&
+                    {meet && <Meeting confirmMeeting={this.confirmMeeting} />}
+                    {dashboard &&
                         <div>
+                            <AppDashboard />
                             <h1>
                                 {name}
                             </h1>
@@ -49,7 +57,7 @@ class Dashboard extends Component {
                                 Set Meeting
                         </button>
                         </div>}
-                    <Location />
+                    {location && <Location />}
                 </div>
             </div>
         )

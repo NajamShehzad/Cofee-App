@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Cards, { Card } from '../../../lib/react-swipe-deck';
 import circle from '../../../images/circle.png';
 import circle1 from '../../../images/circle1.png';
+import swal from 'sweetalert2';
 import './style.css';
 
 class Meeting extends Component {
@@ -18,8 +19,19 @@ class Meeting extends Component {
         this.reject = this.reject.bind(this);
     }
 
-    action(action1) {
-        console.log(action1);
+    action(person) {
+        swal({
+            title: 'Do You Want To Heet?',
+            text: person.name,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                this.props.confirmMeeting(person);
+            }
+        })
 
     }
     reject() {
@@ -47,12 +59,13 @@ class Meeting extends Component {
                 <h1 >
                     Meeting Screen
                </h1>
-                <Cards>
+                <Cards onEnd={() => console.log('end')}>
                     {UserList.map((item) =>
                         <Card
                             key={item.userId}
                             onSwipeLeft={() => this.reject()}
-                            onSwipeRight={() => { this.action(item) }}>
+                            onSwipeRight={() => { this.action(item) }}
+                        >
                             <div className="users-div">
                                 <img src={item.images[index]} />
                                 <div className="dot-div">
@@ -63,9 +76,9 @@ class Meeting extends Component {
                                     {!dot2 && <img src={circle} onClick={() => this.setState({ index: 2, dot0: false, dot1: false, dot2: true })} />}
                                     {dot2 && <img src={circle1} />}
                                 </div>
-                                {/* <button onClick={() => this.setState({ index: index + 1 })}>
-                                    Next
-                                </button> */}
+                                <h3 style={{ backgroundColor: "white" }} >
+                                    Name : {item.name}
+                                </h3>
                             </div>
                         </Card>
                     )}
