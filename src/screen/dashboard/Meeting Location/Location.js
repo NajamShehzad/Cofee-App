@@ -35,6 +35,7 @@ class Location extends Component {
 
     setPlace(place) {
         console.log(place);
+        this.props.confirmLocation(place)
 
     }
 
@@ -58,9 +59,12 @@ class Location extends Component {
         return (
             <div>
                 <div>
+                    <h3>
+                        Search For Place ...
+                    </h3>
                     <form style={{ marginTop: 10 }} onSubmit={this.search}>
-                        <div classNmae="form-row align-items-center">
-                            <div className="col-auto">
+                        <div className="form-row align-items-center">
+                            <div className="col-sm-6">
                                 <input
                                     type="text"
                                     value={keyword}

@@ -17,7 +17,8 @@ class Dashboard extends Component {
             meet: false,
             location: false,
             person: {},
-            dashboard: true
+            dashboard: true,
+            palce: {}
         }
         UserList();
         if (!localStorage.getItem('currentUser')) {
@@ -26,6 +27,7 @@ class Dashboard extends Component {
         checkUser();
         this.confirmMeeting = this.confirmMeeting.bind(this);
         this.setLocation = this.setLocation.bind(this);
+        this.confirmLocation = this.confirmLocation.bind(this);
     }
     setMeeting() {
         const { meet } = this.state;
@@ -36,6 +38,10 @@ class Dashboard extends Component {
     }
     confirmMeeting(person) {
         this.setState({ person, location: true, meet: false });
+    }
+    confirmLocation(place) {
+        this.setState({ place, location: false });
+        
     }
     render() {
         const { name } = this.props.currentUser
@@ -57,7 +63,7 @@ class Dashboard extends Component {
                                 Set Meeting
                         </button>
                         </div>}
-                    {location && <Location />}
+                    {location && <Location confirmLocation={this.confirmLocation} />}
                 </div>
             </div>
         )
