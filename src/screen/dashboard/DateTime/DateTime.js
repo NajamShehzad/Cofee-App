@@ -3,14 +3,6 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
 
-
-
-
-
-
-
-
-
 class DateTime extends Component {
     constructor() {
         super()

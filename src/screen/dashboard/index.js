@@ -61,8 +61,8 @@ class Dashboard extends Component {
             if (result.value) {
                 console.log(result);
 
-            }else{
-                
+            } else {
+
             }
         })
     }
@@ -72,7 +72,7 @@ class Dashboard extends Component {
         // const data = ['Alexandre', 'Thomas', 'Lucien']
         // console.log(this.props);
         return (
-            <div style={{ marginLeft: 30 }}>
+            <div>
                 <Header />
                 <div>
                     {meet && <Meeting confirmMeeting={this.confirmMeeting} />}
