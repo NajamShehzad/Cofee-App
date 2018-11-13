@@ -26,7 +26,7 @@ class Meeting extends Component {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Confirm It!'
         }).then((result) => {
             if (result.value) {
                 this.props.confirmMeeting(person);

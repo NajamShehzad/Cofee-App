@@ -7,7 +7,7 @@
 /coverage
 
 # config
-/src/config/firebase.js
+/src/config/firebaseApi.js
 
 
 # production

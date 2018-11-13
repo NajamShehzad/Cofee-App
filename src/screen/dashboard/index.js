@@ -56,11 +56,12 @@ class Dashboard extends Component {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Confirm It'
         }).then((result) => {
             if (result.value) {
                 console.log(result);
-
+                console.log(this.state);
+                console.log(this.props.currentUser.userId);
             } else {
 
             }
