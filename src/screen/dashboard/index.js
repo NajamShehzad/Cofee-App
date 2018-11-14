@@ -5,7 +5,7 @@ import AppDashboard from '../../components/Dashboard';
 import Meeting from './Meeting/Meeting';
 import DatePicker from './DateTime/DateTime';
 import swal from 'sweetalert2';
-import { UserList } from '../../config/firebase';
+import { UserList, fixMeeting, getToken } from '../../config/firebase';
 import { checkUser } from '../../config/localUser';
 import Location from './Meeting Location/Location';
 
@@ -32,6 +32,7 @@ class Dashboard extends Component {
         this.setLocation = this.setLocation.bind(this);
         this.confirmLocation = this.confirmLocation.bind(this);
         this.confirmTime = this.confirmTime.bind(this);
+        this.setMeeting = this.setMeeting.bind(this);
     }
     setMeeting() {
         const { meet } = this.state;
@@ -60,12 +61,15 @@ class Dashboard extends Component {
         }).then((result) => {
             if (result.value) {
                 console.log(result);
-                console.log(this.state);
-                console.log(this.props.currentUser.userId);
+                fixMeeting(this.props.currentUser, this.state);
+                this.setState({ dashboard: true, meet: false, location: false, date: false });
             } else {
 
             }
         })
+    }
+    componentDidMount() {
+        getToken();
     }
     render() {
         const { name } = this.props.currentUser
@@ -79,13 +83,7 @@ class Dashboard extends Component {
                     {meet && <Meeting confirmMeeting={this.confirmMeeting} />}
                     {dashboard &&
                         <div>
-                            <AppDashboard />
-                            <h1>
-                                {name}
-                            </h1>
-                            <button onClick={() => this.setMeeting()}>
-                                Set Meeting
-                        </button>
+                            <AppDashboard setMeeting={this.setMeeting} />
                         </div>}
                     {location && <Location confirmLocation={this.confirmLocation} />}
                     {date && <DatePicker confirmTime={this.confirmTime} />}

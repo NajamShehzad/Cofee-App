@@ -5,17 +5,19 @@ import { connect } from 'react-redux';
 
 class DashBoard extends Component {
     render() {
-        const data = ['Alexandre', 'Thomas', 'Lucien']
-        // console.log(this.props);
-        function action(action) {
-            console.log(action);
-
-        }
+        const { name } = this.props.currentUser;
+        
         return (
             <div>
                 <h1>
                     Dashboard
                </h1>
+                <h1>
+                    {name}
+                </h1>
+                <button onClick={() => this.props.setMeeting()}>
+                    Set Meeting
+                        </button>
             </div>
         )
     }

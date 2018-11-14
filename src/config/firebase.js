@@ -5,8 +5,46 @@ import firebaseAPI from './firebaseApi';
 firebase.initializeApp(firebaseAPI);
 
 
-export function confirmMeeting(currentUser, person) {
+export function fixMeeting(user, friend) {
+    const { person } = friend;
+    console.log("*******", user);
+    console.log("*******", friend);
+    firebase.database().ref(`meeting/${user.userId}/${person.userId}`).set({
+        place: friend.place,
+        userId: person.userId,
+        time: friend.time,
+        name: person.name,
+        confirm: false,
+        seen: false,
+        invited: false,
+        completed: false
+    });
+    firebase.database().ref(`meeting/${person.userId}/${user.userId}`).set({
+        place: friend.place,
+        userId: user.userId,
+        time: friend.time,
+        name: user.name,
+        confirm: false,
+        seen: false,
+        invited: true,
+        completed: false
+    });
+}
 
+export function getToken() {
+    const messages = firebase.messaging();
+    messages.requestPermission().then(x => {
+        handleTokenRefresh();
+    }).catch(err => {
+        console.log(err)
+    });
+    function handleTokenRefresh() {
+        return messages.getToken().then(token => {
+            console.log(token)
+        }).catch(err => {
+            console.log(err)
+        });
+    }
 }
 
 export function UserList() {
