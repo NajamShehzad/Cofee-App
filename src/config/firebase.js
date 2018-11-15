@@ -5,10 +5,21 @@ import firebaseAPI from './firebaseApi';
 firebase.initializeApp(firebaseAPI);
 
 
+export function getMeetingList(user) {
+    console.log(user);
+    firebase.database().ref(`meeting/${user.userId}`).on('child_added', data => {
+        const date = data.val();
+        store.dispatch({ type: "ADD_ITEM", data: date });
+    })
+
+}
+
+
+
 export function fixMeeting(user, friend) {
     const { person } = friend;
-    console.log("*******user", user.profile.picture.data.url);
-    console.log("*******", friend);
+    // console.log("*******user", user.profile.picture.data.url);
+    // console.log("*******", friend);
     firebase.database().ref(`meeting/${user.userId}/${person.userId}`).set({
         place: friend.place,
         userId: person.userId,
@@ -30,11 +41,11 @@ export function fixMeeting(user, friend) {
         completed: false
     });
     firebase.database().ref('notifications').push({
-        senderId:user.userId,
-        reciverId:person.userId,
-        senderName:user.name,
-        reciverName:person.name,
-        senderPicture:user.profile.picture.data.url
+        senderId: user.userId,
+        reciverId: person.userId,
+        senderName: user.name,
+        reciverName: person.name,
+        senderPicture: user.profile.picture.data.url
     })
 }
 
@@ -48,8 +59,8 @@ export function getToken() {
     function handleTokenRefresh() {
         return messages.getToken().then(token => {
             console.log(token);
-            firebase.auth().onAuthStateChanged(user =>{
-                console.log(user);
+            firebase.auth().onAuthStateChanged(user => {
+                // console.log(user);
                 firebase.database().ref(`users/${user.uid}/token`).set(
                     token
                 )

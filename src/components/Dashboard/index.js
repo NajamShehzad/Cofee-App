@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 
 class DashBoard extends Component {
+
+    
     render() {
         const { name } = this.props.currentUser;
 

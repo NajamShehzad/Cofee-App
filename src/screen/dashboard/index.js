@@ -5,10 +5,10 @@ import AppDashboard from '../../components/Dashboard';
 import Meeting from './Meeting/Meeting';
 import DatePicker from './DateTime/DateTime';
 import swal from 'sweetalert2';
-import { UserList, fixMeeting, getToken } from '../../config/firebase';
+import { UserList, fixMeeting, getToken, getMeetingList } from '../../config/firebase';
 import { checkUser } from '../../config/localUser';
 import Location from './Meeting Location/Location';
-
+import List from '../../components/List/List';
 
 
 class Dashboard extends Component {
@@ -70,15 +70,17 @@ class Dashboard extends Component {
     }
     componentDidMount() {
         getToken();
+        getMeetingList(this.props.currentUser);
     }
     render() {
+        const { meetingList } = this.props;
         const { name } = this.props.currentUser
         const { meet, location, dashboard, date } = this.state;
-        // const data = ['Alexandre', 'Thomas', 'Lucien']
-        // console.log(this.props);
+
         return (
             <div>
                 <Header />
+                {meetingList.length  > 1 && <List />}
                 <div>
                     {meet && <Meeting confirmMeeting={this.confirmMeeting} />}
                     {dashboard &&
@@ -96,7 +98,8 @@ class Dashboard extends Component {
 const mapStateToProps = (state) => {
     return {
         currentUser: state.currentUser,
-        UserList: state.UserList
+        UserList: state.UserList,
+        meetingList: state.meetingList
     }
 }
 
