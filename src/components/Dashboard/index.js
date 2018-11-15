@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 class DashBoard extends Component {
     render() {
         const { name } = this.props.currentUser;
-        
+
         return (
             <div>
                 <h1>
@@ -15,9 +15,11 @@ class DashBoard extends Component {
                 <h1>
                     {name}
                 </h1>
-                <button onClick={() => this.props.setMeeting()}>
+                <button
+                    onClick={() => this.props.setMeeting()}
+                >
                     Set Meeting
-                        </button>
+                </button>
             </div>
         )
     }

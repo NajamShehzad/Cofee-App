@@ -6,9 +6,13 @@
 # testing
 /coverage
 
+#/firebase funtions
+/functions/node_modules
 # config
 /src/config/firebaseApi.js
 
+#firebase API
+/public/firebase-messaging-sw.js
 
 # production
 /build

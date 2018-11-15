@@ -7,7 +7,7 @@ firebase.initializeApp(firebaseAPI);
 
 export function fixMeeting(user, friend) {
     const { person } = friend;
-    console.log("*******", user);
+    console.log("*******user", user.profile.picture.data.url);
     console.log("*******", friend);
     firebase.database().ref(`meeting/${user.userId}/${person.userId}`).set({
         place: friend.place,
@@ -29,6 +29,13 @@ export function fixMeeting(user, friend) {
         invited: true,
         completed: false
     });
+    firebase.database().ref('notifications').push({
+        senderId:user.userId,
+        reciverId:person.userId,
+        senderName:user.name,
+        reciverName:person.name,
+        senderPicture:user.profile.picture.data.url
+    })
 }
 
 export function getToken() {
@@ -40,7 +47,13 @@ export function getToken() {
     });
     function handleTokenRefresh() {
         return messages.getToken().then(token => {
-            console.log(token)
+            console.log(token);
+            firebase.auth().onAuthStateChanged(user =>{
+                console.log(user);
+                firebase.database().ref(`users/${user.uid}/token`).set(
+                    token
+                )
+            })
         }).catch(err => {
             console.log(err)
         });
