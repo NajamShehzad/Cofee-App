@@ -88,7 +88,11 @@ class FullScreenDialog extends React.Component {
                         open={this.state.openDialog}
                         onClose={() => this.setState({ openDialog: false })}
                     >
-                        {this.state.openDialog && <Notification currentUser={this.props.currentUser} changeState={this.changeState} friend={items[this.state.index]} />}
+                        {this.state.openDialog && 
+                        <Notification
+                        closeScreen={() => this.setState({ openDialog: false })}
+                        currentUser={this.props.currentUser} changeState={this.changeState} friend={items[this.state.index]} 
+                        />}
                     </Dialog>
                     <List>
                         {items.map((data, index) => {

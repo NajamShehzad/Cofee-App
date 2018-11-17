@@ -17,72 +17,35 @@ class NotificationScreen extends Component {
     this.state = {
       notificationScr: [],
       friendProfile: null,
+      friend:null
     };
     
   }
 
 
   componentWillMount() {
-    const friend = this.props.friend
+    const friend = this.props.friend;
     // localStorage.setItem("notif","false");
     firebase.database().ref(`users/${friend.userId}`).on('value',(data =>{
       const friendProfile = data.val().profile.picture.data.url;
       console.log("pictureData",friendProfile)
-      this.setState({friendProfile:friendProfile});
-    }))
-      // this.changeStatus();
-    
-    
+      this.setState({friendProfile:friendProfile,friend:this.props.friend});
+    })) 
   }
 
-  // changeStatus() {
-  //   const {notificationScr,showNOt,firstTime} =this.state;
-  //   const th = this;
-  //   var userId = localStorage.getItem("meetingAppUserId");
-  //   db.collection("meetUps")
-  //     .where("meetUPWithId", "==", userId)
-  //     // .where("userId", "==", userId)
-  //     .onSnapshot(res => {
-  //       const chk = localStorage.getItem("notif");
-  //       const arr = [];
-  //       if(chk == "true"){
-  //         // this.state.showNOt =true;
-         
-  //       this.setState({showNOt:true},() => {
-  //         console.log("dddd------------------")
-  //       })
-  //       }
-        
-        
-  //       res.forEach(res => {
-  //   localStorage.setItem("notif","true");
-
-  //         console.log(res.data());
-  //         console.log("-----------------------chlgya baiii");
-  //         arr.push(res.data());
-  //         this.setState({notificationScr:arr});
-  //       });
-  //     });
-  // }
-  
-  clickOn = () => {
-    this.props.changeState();
-    // var box = document.querySelector(".bg-modal2");
-    // const th = this;
-    // // Detect all clicks on the document
-    // document.addEventListener("click", function(event) {
-    
-    // // If user clicks inside the element, do nothing
-    // if (event.target.closest(".notifi")) return;
-    
-    // // If user clicks outside the element, hide it!
-    //     // box.classList.add("js-is-hidden");
-    //     console.log("clicked");
-    //     th.setState({showNOt: false});
-    // });
+  confirmMeeting(){
+      const {friend} = this.state;
+      const {currentUser} = this.props;
+      firebase.database().ref(`meeting/${friend.userId}/${currentUser.userId}/confirm`)
+      .set(true).then(x=>{
+          console.log(x);
+      })
+      firebase.database().ref(`meeting/${currentUser.userId}/${friend.userId}/confirm`)
+      .set(true).then(x=>{
+          console.log(x);
+          this.props.closeScreen();
+      })
   }
- 
-
 
   render() {
     const {notificationScr,showNOt} = this.state;
@@ -90,7 +53,7 @@ class NotificationScreen extends Component {
       <div>
 
 
-        <div className="bg-modal2" onClick={this.clickOn}>
+        <div className="bg-modal2" >
         <div className="modal-contents2">
       {/* {notificationScr.length &&
       notificationScr.map(res => {
@@ -152,7 +115,7 @@ class NotificationScreen extends Component {
             </div>
             <div className="btnDivNoti">
               <button>Direction</button>
-              <button>Confirm</button>
+              <button onClick={() =>  this.confirmMeeting()} >Confirm</button>
             </div>
           </div>
         )

@@ -24,231 +24,241 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { connect } from 'react-redux';
 import MeetingList from '../Material List/index';
+import firebase from '../../config/firebase';
 
 
 
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
 const styles = {
-  root: {
-    flexGrow: 1,
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: 'auto',
-  },
-  avatar: {
-    width: 60,
-    height: 60,
-    top: 60,
-    left: 10
-  },
-  drawerText: {
-    paddingLeft: '10px',
-    // backgroundColor: '#e0f2f111',
-    color: "white"
-  }
+    root: {
+        flexGrow: 1,
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 20,
+    },
+    list: {
+        width: 250,
+    },
+    fullList: {
+        width: 'auto',
+    },
+    avatar: {
+        width: 60,
+        height: 60,
+        top: 60,
+        left: 10
+    },
+    drawerText: {
+        paddingLeft: '10px',
+        // backgroundColor: '#e0f2f111',
+        color: "white"
+    }
 };
 
 class MenuAppBar extends React.Component {
-  state = {
-    auth: true,
-    anchorEl: null,
-    left: false,
-  };
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      left: open,
-    });
-  };
+    state = {
+        auth: true,
+        anchorEl: null,
+        left: false,
+    };
+    toggleDrawer = (side, open) => () => {
+        this.setState({
+            left: open,
+        });
+    };
 
-  handleChange = event => {
-    this.setState({ auth: event.target.checked });
-  };
+    handleChange = event => {
+        this.setState({ auth: event.target.checked });
+    };
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+    handleMenu = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-  sideMenu = () => {
-    console.log('sid menu');
-  }
-
-
-  componentDidMount() {
-    if (localStorage.getItem("meetingAppUserData")) {
-      this.setState({ myData: JSON.parse(localStorage.getItem("meetingAppUserData")) });
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
+    sideMenu = () => {
+        console.log('sid menu');
     }
-  }
-  render() {
-
-    const Friends = this.props.meetingList;
-    console.log(Friends)
-    const request = [], pending = [], completed = [];
-    Friends.map(data => {
-      if (data.completed) {
-        completed.push(data)
-      }
-      else if (data.invited) {
-        console.log("Req")
-        request.push(data)
-      }
-      else {
-        pending.push(data)
-      }
-    })
 
 
 
+    logOut() {
+        firebase.auth().signOut().then(x => {
+            localStorage.clear();
+            window.location.reload();
+        })
+    }
 
 
-    const { classes } = this.props;
-    const { auth, anchorEl, myData } = this.state;
-    const open = Boolean(anchorEl);
-    const { user } = this.props;
-    console.log(this.props);
+    render() {
+
+        const Friends = this.props.meetingList;
+        console.log(Friends)
+        const request = [], pending = [], completed = [], accepted = [];
+        Friends.map(data => {
+            if (data.confirm) {
+                accepted.push(data);
+            }
+            else if (data.completed) {
+                completed.push(data)
+            }
+            else if (data.invited) {
+                console.log("Req")
+                request.push(data)
+            }
+            else {
+                pending.push(data)
+            }
+        })
 
 
-    const sideList = (
-      <div>
-        <div className={classes.list}>
-          <div style={{ width: "100%", height: "200px", backgroundImage: `url(https://img3.goodfon.ru/wallpaper/big/3/2f/poligony-linii-grani-ugol.jpg)`, backgroundRepeat: 'no-repeat', backgroundSize: "cover" }}>
-            <span>
-              <Avatar src={user.profile.picture.data.url} className={classes.avatar} alt="Profile Picture" />
-              <br />
-              <br />
-              <br />
-              <Typography className={classes.drawerText} variant='overline'>{user.name}</Typography>
-              {/* <Typography className={classes.drawerText} variant='body2'>sfsd</Typography> */}
-            </span>
-          </div>
-          <List>
-            <ListItem button key="Dashboard">
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItem>
-          </List>
-          <Divider />
-          <List>
-            <ListItem>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <MeetingList name={"Requests"} items={request} /><br />
-            </ListItem>
-            <Divider />
-            <ListItem>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <MeetingList name={"Accepted"} items={completed} /><br />
-            </ListItem>
-            <Divider />
-            <ListItem>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <MeetingList name={"Pending"} items={pending} /><br />
-            </ListItem>
-            <Divider />
-            <ListItem>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <MeetingList name={"Completed"} items={completed} /><br />
-            </ListItem>
-          </List>
-          <Divider />
-          <List>
-            <ListItem button key="Logout">
-              <ListItemIcon><Close /></ListItemIcon>
-              <ListItemText primary="Logout" />
-            </ListItem>
-          </List>
-        </div>
-      </div>
-    );
 
 
-    return (
-      <div className={classes.root}>
 
-        {/* <SwipeableTemporaryDrawer /> */}
+        const { classes } = this.props;
+        const { auth, anchorEl, myData } = this.state;
+        const open = Boolean(anchorEl);
+        const { user } = this.props;
+        console.log(this.props);
 
-        <AppBar position="static">
-          <Toolbar>
-            <SwipeableDrawer
-              open={this.state.left}
-              onClose={this.toggleDrawer('left', false)}
-              onOpen={this.toggleDrawer('left', true)}
-            >
-              <div
-                tabIndex={0}
-                role="button"
-                onClick={this.toggleDrawer('left', true)}
-                onKeyDown={this.toggleDrawer('left', true)}
-              >
-                {sideList}
-              </div>
-            </SwipeableDrawer>
-            <IconButton
-              onClick={this.toggleDrawer('left', true)}
-              className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
 
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              Meeting App
+        const sideList = (
+            <div>
+                <div className={classes.list}>
+                    <div style={{ width: "100%", height: "200px", backgroundImage: `url(https://img3.goodfon.ru/wallpaper/big/3/2f/poligony-linii-grani-ugol.jpg)`, backgroundRepeat: 'no-repeat', backgroundSize: "cover" }}>
+                        <span>
+                            {user.profile &&
+                                <Avatar src={user.profile.picture.data.url} className={classes.avatar} alt="Profile Picture" />
+                            }
+                            <br />
+                            <br />
+                            <br />
+                            <Typography className={classes.drawerText} variant='overline'>{user.name}</Typography>
+                            {/* <Typography className={classes.drawerText} variant='body2'>sfsd</Typography> */}
+                        </span>
+                    </div>
+                    <List>
+                        <ListItem button key="Dashboard">
+                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemText primary="Dashboard" />
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <List>
+                        <ListItem>
+                            <ListItemIcon><MailIcon /></ListItemIcon>
+                            <MeetingList name={"Requests"} items={request} /><br />
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemIcon><MailIcon /></ListItemIcon>
+                            <MeetingList name={"Accepted"} items={accepted} /><br />
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemIcon><MailIcon /></ListItemIcon>
+                            <MeetingList name={"Pending"} items={pending} /><br />
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemIcon><MailIcon /></ListItemIcon>
+                            <MeetingList name={"Completed"} items={completed} /><br />
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <List>
+                        <ListItem button key="Logout" onClick={() => this.logOut()}>
+                            <ListItemIcon><Close /></ListItemIcon>
+                            <ListItemText primary="Logout" />
+                        </ListItem>
+                    </List>
+                </div>
+            </div>
+        );
+
+
+        return (
+            <div className={classes.root}>
+
+                {/* <SwipeableTemporaryDrawer /> */}
+
+                <AppBar position="static">
+                    <Toolbar>
+                        <SwipeableDrawer
+                            open={this.state.left}
+                            onClose={this.toggleDrawer('left', false)}
+                            onOpen={this.toggleDrawer('left', true)}
+                        >
+                            <div
+                                tabIndex={0}
+                                role="button"
+                                onClick={this.toggleDrawer('left', true)}
+                                onKeyDown={this.toggleDrawer('left', true)}
+                            >
+                                {sideList}
+                            </div>
+                        </SwipeableDrawer>
+                        <IconButton
+                            onClick={this.toggleDrawer('left', true)}
+                            className={classes.menuButton} color="inherit" aria-label="Menu">
+                            <MenuIcon />
+                        </IconButton>
+
+                        <Typography variant="h6" color="inherit" className={classes.grow}>
+                            Meeting App
             </Typography>
-            {auth && (
-              <div>
-                <IconButton
-                  aria-owns={open ? 'menu-appbar' : undefined}
-                  aria-haspopup="true"
-                  onClick={this.handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
-  }
+                        {auth && (
+                            <div>
+                                <IconButton
+                                    aria-owns={open ? 'menu-appbar' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={this.handleMenu}
+                                    color="inherit"
+                                >
+                                    <AccountCircle />
+                                </IconButton>
+                                <Menu
+                                    id="menu-appbar"
+                                    anchorEl={anchorEl}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={open}
+                                    onClose={this.handleClose}
+                                >
+                                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                </Menu>
+                            </div>
+                        )}
+                    </Toolbar>
+                </AppBar>
+            </div>
+        );
+    }
 }
 
 MenuAppBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
 
 const mapStateToProps = (state) => {
-  return {
-    meetingList: state.meetingList
-  }
+    return {
+        meetingList: state.meetingList
+    }
 }
 
 export default connect(mapStateToProps)(withStyles(styles)(MenuAppBar));
