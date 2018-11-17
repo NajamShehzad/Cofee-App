@@ -9,6 +9,8 @@ import { UserList, fixMeeting, getToken, getMeetingList } from '../../config/fir
 import { checkUser } from '../../config/localUser';
 import Location from './Meeting Location/Location';
 import List from '../../components/List/List';
+import SideBar from '../../components/appBarSetPro/index';
+import Dialog from '../../components/Material List/index';
 
 
 class Dashboard extends Component {
@@ -79,8 +81,9 @@ class Dashboard extends Component {
 
         return (
             <div>
-                <Header />
-                {meetingList.length  > 1 && <List />}
+                {/* <Header /> */}
+                <SideBar user={this.props.currentUser} />
+                <Dialog/>
                 <div>
                     {meet && <Meeting confirmMeeting={this.confirmMeeting} />}
                     {dashboard &&

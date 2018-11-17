@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {checkUser} from './config/localUser';
 import Home from './screen/Home';
 import LoginScreen from './screen/Profile';
-import Dashboard from './screen/Dashboard/index';
+import Dashboard from './screen/dashboard/index';
 import Policy from './screen/policy/index';
 
 class App extends Component {
