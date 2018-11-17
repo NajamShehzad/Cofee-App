@@ -1,5 +1,5 @@
 .homeDiv{
-    background: url('../../images/bg.jpg');
+    background: url('../../images/home.jpg');
     background-size: cover;
     height: 100vh;
     filter: brightness(70%) blur(2.5px);

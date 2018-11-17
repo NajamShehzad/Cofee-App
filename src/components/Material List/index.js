@@ -35,7 +35,7 @@ class FullScreenDialog extends React.Component {
         super(props)
         this.state = {
             open: false,
-            items: [],
+            items1: [],
             openDialog: false,
             index: null
         };
@@ -44,8 +44,13 @@ class FullScreenDialog extends React.Component {
     }
 
 
-    static getDerivedStateFromProps(nextProps, nextState) {
+    static getDerivedStateFromProps(nextProps, nextState,previousProps,previousState) {
+
         console.log('Material List  ** NExt props', nextProps);
+        console.log("Material user =>",nextState );
+        // if (state.items1) {
+
+        // }
         // console.log('Material List  ** NExt props);
     }
 
@@ -61,12 +66,13 @@ class FullScreenDialog extends React.Component {
         this.setState({ index: index, openDialog: true })
     }
     changeState() {
-        this.setState({index:null,openDialog:false})
+        this.setState({ index: null, openDialog: false })
     }
 
     render() {
-        const { classes, name, items = []} = this.props;
-        this.state.items = items;
+        const { classes, name, items = [] } = this.props;
+        this.state.items1 = items;
+        const items1 = this.state.items1;
         console.log("from matrial", this.props.currentUser)
         return (
             <div>
@@ -88,16 +94,17 @@ class FullScreenDialog extends React.Component {
                         open={this.state.openDialog}
                         onClose={() => this.setState({ openDialog: false })}
                     >
-                        {this.state.openDialog && 
-                        <Notification
-                        closeScreen={() => this.setState({ openDialog: false })}
-                        currentUser={this.props.currentUser} changeState={this.changeState} friend={items[this.state.index]} 
-                        />}
+                        {this.state.openDialog &&
+                            <Notification
+                                closeScreen={() => this.setState({ openDialog: false })}
+                                name={name}
+                                currentUser={this.props.currentUser} changeState={this.changeState} friend={items[this.state.index]}
+                            />}
                     </Dialog>
                     <List>
-                        {items.map((data, index) => {
+                        {items1.map((data, index) => {
                             return (
-                                <ListItem onClick={() => this.handleDialogOpne(index)} style={{cursor:'pointer'}}  >
+                                <ListItem onClick={() => this.handleDialogOpne(index)} style={{ cursor: 'pointer' }}  >
                                     <ListItemText primary={data.name} secondary={"Hi There Wana Meet ?"} />
                                     <IconButton
                                         onClick={() => this.handleDialogOpne(index)}
@@ -132,7 +139,7 @@ FullScreenDialog.propTypes = {
 const mapStateToProps = (state) => {
     return {
         meetingList: state.meetingList,
-        currentUser:state.currentUser
+        currentUser: state.currentUser
     }
 }
 

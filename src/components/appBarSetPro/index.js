@@ -25,6 +25,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import { connect } from 'react-redux';
 import MeetingList from '../Material List/index';
 import firebase from '../../config/firebase';
+import {withRouter} from 'react-router-dom';
 
 
 
@@ -82,6 +83,8 @@ class MenuAppBar extends React.Component {
 
     handleClose = () => {
         this.setState({ anchorEl: null });
+        this.props.history.push('/editProfile');
+        console.log("from unknown",this.props.history);
     };
     sideMenu = () => {
         console.log('sid menu');
@@ -132,7 +135,7 @@ class MenuAppBar extends React.Component {
         const sideList = (
             <div>
                 <div className={classes.list}>
-                    <div style={{ width: "100%", height: "200px", backgroundImage: `url(https://img3.goodfon.ru/wallpaper/big/3/2f/poligony-linii-grani-ugol.jpg)`, backgroundRepeat: 'no-repeat', backgroundSize: "cover" }}>
+                    <div style={{ width: "100%", height: "200px", backgroundImage: `url(https://i.dailymail.co.uk/i/pix/2017/04/06/11/3F006CA900000578-4386078-image-a-15_1491475710861.jpg)`, backgroundRepeat: 'no-repeat', backgroundSize: "cover" }}>
                         <span>
                             {user.profile &&
                                 <Avatar src={user.profile.picture.data.url} className={classes.avatar} alt="Profile Picture" />
@@ -144,12 +147,6 @@ class MenuAppBar extends React.Component {
                             {/* <Typography className={classes.drawerText} variant='body2'>sfsd</Typography> */}
                         </span>
                     </div>
-                    <List>
-                        <ListItem button key="Dashboard">
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
-                            <ListItemText primary="Dashboard" />
-                        </ListItem>
-                    </List>
                     <Divider />
                     <List>
                         <ListItem>
@@ -213,7 +210,7 @@ class MenuAppBar extends React.Component {
 
                         <Typography variant="h6" color="inherit" className={classes.grow}>
                             Meeting App
-            </Typography>
+                        </Typography>
                         {auth && (
                             <div>
                                 <IconButton
@@ -238,8 +235,8 @@ class MenuAppBar extends React.Component {
                                     open={open}
                                     onClose={this.handleClose}
                                 >
-                                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                    <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>Edit Profile</MenuItem>
+                                    {/* <MenuItem onClick={this.handleClose}>My account</MenuItem> */}
                                 </Menu>
                             </div>
                         )}
@@ -261,4 +258,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(MenuAppBar));
+export default  withRouter(connect(mapStateToProps)(withStyles(styles)(MenuAppBar)));

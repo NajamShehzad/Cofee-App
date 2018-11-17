@@ -47,6 +47,10 @@ class NotificationScreen extends Component {
       })
   }
 
+  closeScreen1(){
+    this.props.closeScreen();
+  }
+
   render() {
     const {notificationScr,showNOt} = this.state;
     return (
@@ -114,8 +118,10 @@ class NotificationScreen extends Component {
               <p>Time : 18/5/19 - 05:30</p>
             </div>
             <div className="btnDivNoti">
-              <button>Direction</button>
-              <button onClick={() =>  this.confirmMeeting()} >Confirm</button>
+              <button onClick={() => this.closeScreen1()} >Close</button>
+              {
+                this.props.name == "Requests" && <button onClick={() =>  this.confirmMeeting()} >Confirm</button>
+              }
             </div>
           </div>
         )
